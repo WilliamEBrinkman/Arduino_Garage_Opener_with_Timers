@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Page 2 Timers Update</title>
+        <script>
+		strRELAY = "";
+		strSTATE = "";
+				
+		var isOn = false;
+		
+		function ProcessXML(){
+			nocache = "&nocache=";  // + Math.random() * 1000000;
+			var request = new XMLHttpRequest();
+			request.onreadystatechange = function()
+			{
+				if (this.readyState == 4) {
+					if (this.status == 200) {
+						if (this.responseXML != null) {
+							// XML file received - contains hours and minutes of the various timers
+							
+							var count = 0;
+							//  xml file  hours order is relay 1, relay 2 on, relay 2 off
+							//  xml file  minutes order is relay 1, relay 2 on, relay 2 off
+						
+							// hours
+							 var num_an = this.responseXML.getElementsByTagName("hours").length;
+							for (count = 0; count < num_an; count++) {
+								document.getElementsByClassName("hours")[count].innerHTML =
+									this.responseXML.getElementsByTagName("hours")[count].childNodes[0].nodeValue;
+							}
+							// minutes
+							num_an = this.responseXML.getElementsByTagName("minutes").length;
+							for (count = 0; count < num_an; count++) {
+								document.getElementsByClassName("minutes")[count].innerHTML =
+									this.responseXML.getElementsByTagName("minutes")[count].childNodes[0].nodeValue;
+							
+							
+							}
+						}
+					}
+				}
+			}
+			// send HTTP GET request with LEDs to switch on/off if any
+			request.open("GET", "ajax2_inputs" + strRELAY + strSTATE + nocache, true);
+			//request.open("GET", "file:///C:/Users/William/Documents/xml/ajax_inputs.xml", false);
+			request.send(null);
+			strSTATE = "";
+			}
+		// service LEDs when checkbox checked/unchecked
+		function Relay1() 
+		{
+				isOn = true;
+				strRELAY = "&REL1=1";
+				ProcessXML();
+		}
+		function Relay2on()
+		{
+				isOn = true;
+				strRELAY = "&REL2on=1";
+				ProcessXML();
+		}
+		function Relay2of()
+		{
+				isOn = true;
+				strRELAY = "&REL2of=1";
+				ProcessXML();
+		}
+			
+		function HourAdd()
+		{
+				isOn = true;
+				strSTATE = "&HA=1";
+				ProcessXML();
+		}
+		function HourSub()
+		{
+				isOn = true;
+				strSTATE = "&HS=1";
+				ProcessXML();
+		}
+		function MinAdd()
+		{
+				isOn = true;
+				strSTATE = "&MA=1";
+				ProcessXML();
+		}
+		function MinSub()
+		{
+				isOn = true;
+				strSTATE = "&MS=1";
+				ProcessXML();
+		}
+		
+	</script>
+	<style>
+		.IO_box {
+			float: left;
+			margin: 0 20px 20px 0;
+			border: 1px solid blue;
+			padding: 0 5px 0 5px;
+			width: 150px;
+		}
+		h1 {
+			font-size: 120%;
+			color: blue;
+			margin: 0 0 10px 0;
+		}
+		h2 {
+			font-size: 85%;
+			color: #5734E6;
+			margin: 5px 0 5px 0;
+		}
+		p, form, button {
+			font-size: 80%;
+			color: #252525;
+		}
+		img{
+			margin-left: 50px;
+			float: left;
+		}
+		.small_text {
+			font-size: 70%;
+			color: #737373;
+			float: left;
+		}
+	</style>
+    </head>
+    <body onload="ProcessXML()">
+        <h1>Timer/Alarm Update Ajax I/O</h1>
+     
+		<div class="IO_box">
+			<h2>Object to Update</h2>
+			<p>     </p>
+			<p>     </p>
+			<form id="Relay1" name="Relay1_form">
+				<input type="radio" name="Relay1a" value="0" onclick="Relay1()" />Relay 1 Door<br /><br />
+				<input type="radio" name="Relay1a" value="0" onclick="Relay2on()" />Relay 2 On<br /><br />
+				<input type="radio" name="Relay1a" value="0" onclick="Relay2of()" />Relay 2 Off<br /><br />
+			</form>
+		</div>
+		<div class="IO_box">
+			<h2>Hours</h2>
+			<button type="button" id="HourAdd" onclick="HourAdd()">Add</button><br /><br />
+			<p><span class="hours">...</span></p>
+			<p><span class="hours">...</span></p>
+			<p><span class="hours">...</span></p>
+			<button type="button" id="HourSub" onclick="HourSub()">Subtract</button><br /><br />
+		</div>
+		<div class="IO_box">
+			<h2>Minutes</h2>
+			<button type="button" id="MinAdd" onclick="MinAdd()">Add</button><br /><br />
+			<p><span class="minutes">...</span></p>
+			<p><span class="minutes">...</span></p>
+			<p><span class="minutes">...</span></p>
+			<button type="button" id="MinSub" onclick="MinSub()">Subtract</button><br /><br />
+		</div>
+		<div class="IO_box">
+			<h2>Return to Index page</h2>
+			<p>Go back to <a href="index.htm">main page</a>.</p>
+		</div>
+	</body>
+</html>
