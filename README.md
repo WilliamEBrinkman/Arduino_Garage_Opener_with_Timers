@@ -1,5 +1,7 @@
 # Arduino_Garage_Opener_with_Timers
-Arduino Garage Door Opener with 2nd Relay and Browser Adjustable timers
+
+Arduino Garage Door Opener with 2nd Relay and Browser Adjustable timers.
+
 The previous project was well documented with sources.  Please refer to that project for basic - how-to.
 
 Follow on to the earlier project with a few modifications.
